@@ -35,7 +35,7 @@
                                     <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                     <tableColumns>
                                         <tableColumn width="116" minWidth="40" maxWidth="1000" id="XdE-8p-s8E">
-                                            <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" title="Name">
+                                            <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Name">
                                                 <font key="font" metaFont="smallSystem"/>
                                                 <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
@@ -45,6 +45,7 @@
                                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             </textFieldCell>
+                                            <sortDescriptor key="sortDescriptorPrototype" selector="caseInsensitiveCompare:" sortKey="name"/>
                                             <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                             <prototypeCellViews>
                                                 <tableCellView id="SOM-e7-POV">
@@ -80,6 +81,7 @@
                                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             </textFieldCell>
+                                            <sortDescriptor key="sortDescriptorPrototype" selector="compare:" sortKey="raise"/>
                                             <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                             <prototypeCellViews>
                                                 <tableCellView id="3Pn-TM-NEE">
@@ -111,6 +113,7 @@
                                     <connections>
                                         <binding destination="94L-ue-ecw" name="content" keyPath="arrangedObjects" id="CF4-om-DGX"/>
                                         <binding destination="94L-ue-ecw" name="selectionIndexes" keyPath="selectionIndexes" previousBinding="CF4-om-DGX" id="EWf-Tp-AP9"/>
+                                        <binding destination="94L-ue-ecw" name="sortDescriptors" keyPath="sortDescriptors" previousBinding="EWf-Tp-AP9" id="Zuz-uw-EHg"/>
                                     </connections>
                                 </tableView>
                             </subviews>
@@ -144,6 +147,12 @@
                         <buttonCell key="cell" type="push" title="Remove" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="ylu-Yq-1CF">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
+                            <string key="keyEquivalent" base64-UTF8="YES">
+CA
+</string>
+                            <connections>
+                                <binding destination="94L-ue-ecw" name="enabled" keyPath="canRemove" id="JSc-G4-Bd6"/>
+                            </connections>
                         </buttonCell>
                         <connections>
                             <action selector="remove:" target="94L-ue-ecw" id="vaj-bF-VSr"/>
