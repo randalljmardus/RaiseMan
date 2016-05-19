@@ -110,6 +110,7 @@
                                     </tableColumns>
                                     <connections>
                                         <binding destination="94L-ue-ecw" name="content" keyPath="arrangedObjects" id="CF4-om-DGX"/>
+                                        <binding destination="94L-ue-ecw" name="selectionIndexes" keyPath="selectionIndexes" previousBinding="CF4-om-DGX" id="EWf-Tp-AP9"/>
                                     </connections>
                                 </tableView>
                             </subviews>
