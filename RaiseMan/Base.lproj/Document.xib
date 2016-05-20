@@ -99,7 +99,11 @@
                                                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                             </textFieldCell>
                                                             <connections>
-                                                                <binding destination="3Pn-TM-NEE" name="value" keyPath="objectValue.raise" id="GM9-uL-hOF"/>
+                                                                <binding destination="3Pn-TM-NEE" name="value" keyPath="objectValue.raise" id="hiV-wW-bmf">
+                                                                    <dictionary key="options">
+                                                                        <bool key="NSValidatesImmediately" value="YES"/>
+                                                                    </dictionary>
+                                                                </binding>
                                                             </connections>
                                                         </textField>
                                                     </subviews>
