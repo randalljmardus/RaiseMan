@@ -8,9 +8,23 @@
 
 import Cocoa
 
-class Document: NSDocument {
+private var KVOContext: Int = 0
+
+class Document: NSDocument, NSWindowDelegate {
     
-    var employees: [Employee] = []
+    var employees: [Employee] = [] {
+        willSet {
+            for employee in employees {
+                stopObservingEmployee(employee)
+            }
+        }
+        
+        didSet {
+            for employee in employees {
+                startObservingEmployee(employee)
+            }
+        }
+    }
 
     override init() {
         super.init()
@@ -44,7 +58,69 @@ class Document: NSDocument {
         // If you override either of these, you should also override -isEntireFileLoaded to return false if the contents are lazily loaded.
        // throw NSError(domain: NSOSStatusErrorDomain, code: unimpErr, userInfo: nil)
     }
-
-
+    
+    //MARK: - Accessors
+    
+    func insertObject(employee: Employee, inEmployeesAtIndex index: Int) {
+        print("adding \(employee) to the employees array")
+        
+        //add the inverse of this operation to the undo stack
+        let undo: NSUndoManager = undoManager!
+        undo.prepareWithInvocationTarget(self)
+            .removeObjectFromEmployeesAtIndex(employees.count)
+        if !undo.undoing {
+            undo.setActionName("Add Person")
+        }
+        
+        employees.append(employee)
+    }
+    
+    func removeObjectFromEmployeesAtIndex(index: Int) {
+        let employee: Employee = employees[index]
+        
+        print("removing \(employee) from the employees array")
+        
+        //add the inverse of this operation to the undo stack
+        let undo: NSUndoManager = undoManager!
+        undo.prepareWithInvocationTarget(self)
+            .insertObject(employee, inEmployeesAtIndex: index)
+        if !undo.undoing {
+            undo.setActionName("Remove Person")
+        }
+        
+        //Remove the employee from the array
+        employees.removeAtIndex(index)
+    }
+    
+    //MARK: - Key Value Observing
+    func startObservingEmployee(employee: Employee) {
+        employee.addObserver(self, forKeyPath: "name", options: .Old, context: &KVOContext)
+    }
+    
+    func stopObservingEmployee(employee: Employee) {
+        employee.removeObserver(self, forKeyPath: "name", context: &KVOContext)
+        employee.removeObserver(self, forKeyPath: "raise", context: &KVOContext)
+    }
+    
+    override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
+        
+        if context != &KVOContext {
+            //if the context does not match...
+            //this message must be intended for our superclass.
+            super.observeValueForKeyPath(keyPath, ofObject: object, change: change, context: context)
+            return
+        }
+    
+        if let oldValue = change?[NSKeyValueChangeOldKey] {
+        let undo: NSUndoManager = undoManager!
+        print("oldValue=\(oldValue)")
+        undo.prepareWithInvocationTarget(object!).setValue(oldValue, forKeyPath: keyPath!)
+        }
+    }
+    
+    //MARK: - NSWindowDelegate
+    
+    func windowWillClose(notification: NSNotification) {
+        employees = []
+    }
 }
-
